@@ -3,7 +3,7 @@ package jp.chan;
 
 import jp.keys.Keys;
 import jp.tools.Now;
-import jp.tools.TENKI;
+import jp.tools.Tenki;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
@@ -58,7 +58,7 @@ public class ChanBotForReply {
             } else if (targetMess.contains("ねむ") || targetMess.contains("眠い") || targetMess.contains("寝")) {
                 message = "睡眠をとるのはどうですか";
             } else if (targetMess.contains("天気")) {
-                message = TENKI.tenki(targetMess);
+                message = Tenki.tenki(targetMess);
             } else {
                 message = "(・ω・)";
             }
