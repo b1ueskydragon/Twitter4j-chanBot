@@ -1,2 +1,4 @@
 # 認証キー
 src/jp/keys/Keys.java
+.idea/
+classes/
