@@ -12,6 +12,6 @@ public class Now {
         format.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
         String formatedDate = format.format(new Date());
 
-        return  formatedDate;
+        return  formatedDate.replace(":","時") + "分";
     }
 }
