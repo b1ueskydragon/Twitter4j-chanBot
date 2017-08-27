@@ -2,8 +2,6 @@ package jp.chan;
 
 
 import jp.keys.Keys;
-import jp.tools.Now;
-import jp.tools.Tenki;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
@@ -12,15 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ijrd1
- *
- * https://groups.google.com/forum/#!topic/twitter4j-j/lzctj0PDThU 参考
- * http://twitter4j.org/ja/configuration.html できれば
+ * Created by b1ueskydragon
  */
 public class ChanBotForReply {
 
+    // TODO 一定時間繰り返してID取得 -> 新たなつぶやきIDだと判断したら返事する
     private static final String FROMBOT = " --- ちゃんbotより";
-    private static String NOW = Now.whatTimeIsIt();
 
     public static void main(String[] args) {
 
@@ -29,9 +24,9 @@ public class ChanBotForReply {
         twitter.setOAuthAccessToken(new AccessToken(Keys.ACCESSTOKEN.toString(), Keys.ACCESSTOKENSECRET.toString()));
 
         try {
-
-            // TODO 一定時間繰り返してID取得 -> 新たなつぶやきIDだと判断したら返事する
-
+            /**
+             * 自分とのやりとり
+             */
             // timeline (mentioned) 取得
             ResponseList<Status> statuses = twitter.getUserTimeline();
             List<String> idList = new ArrayList<>(); // ターゲットさんのつぶやきID
@@ -47,23 +42,39 @@ public class ChanBotForReply {
             BigInteger target = new BigInteger(idList.get(0));
             System.out.println(idList.get(0) + "::" + messList.get(0));
 
-            String annoTarget = Keys.ME.toString();
+
+            /**
+             * Who's the target, ME or not.
+             */
+            String annoTarget =
+                    messList.get(0).substring(1,2).equals("@")
+                            ? messList.get(0).split(" ")[0].substring(2): Keys.ME.toString();
+
+            /**
+             * target is not ME
+             */
+            // TODO Refactor
+            ResponseList<Status> statuses_ = twitter.getMentionsTimeline();
+            List<String> idList_ = new ArrayList<>(); // ターゲットさんのつぶやきID
+            List<String> messList_ = new ArrayList<>(); // ターゲットさんがつぶやいた内容
+            // idの数字のところだけ取得
+            for (Status s : statuses_) {
+                String[] statusArray = s.toString().split(",");
+                idList_.add(statusArray[1].trim().substring(3));
+                messList_.add(statusArray[2].trim().substring(5));
+            }
+
+            if (!annoTarget.equals(Keys.ME.toString())) {
+                target = new BigInteger(idList_.get(0));
+                System.out.println(target);
+                System.out.println(target + "::" + messList_.get(0));
+            }
 
             int idx = 0;
             String targetMess = messList.get(idx);
-            String message ;
+            String botReply = MessageFilter.makeReply(targetMess);
 
-            if (targetMess.contains("どこ") && targetMess.contains("行")) {
-                message = "スタバ！";
-            } else if (targetMess.contains("ねむ") || targetMess.contains("眠い") || targetMess.contains("寝")) {
-                message = "睡眠をとるのはどうですか";
-            } else if (targetMess.contains("天気")) {
-                message = Tenki.tenki(targetMess);
-            } else {
-                message = "(・ω・)";
-            }
-
-            twitter.updateStatus(new StatusUpdate("@" + annoTarget + " " + message + FROMBOT)
+            twitter.updateStatus(new StatusUpdate("@" + annoTarget + " " + botReply + FROMBOT)
                     .inReplyToStatusId(target.longValue()));
 
             System.out.println("yes ok !");
@@ -71,6 +82,5 @@ public class ChanBotForReply {
         } catch (TwitterException e) {
             System.out.println("no !" + e.getMessage());
         }
-
     }
 }
