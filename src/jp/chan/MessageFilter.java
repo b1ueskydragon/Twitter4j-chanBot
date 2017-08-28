@@ -57,7 +57,7 @@ public class MessageFilter {
             }
         }
         sc.close();
-        return freeReply;
+        return freeReply + " (中の人) ";
     }
 
     public static String getInagonMoji(){
