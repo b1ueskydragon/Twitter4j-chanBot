@@ -26,12 +26,11 @@ public class ChanBotForReply {
             /**
              * 自分とのやりとり
              */
-            // timeline (mentioned) 取得
-            ResponseList<Status> userStatuses = twitter.getUserTimeline(); // 全タイムライン読み込み
+            ResponseList<Status> statuses = twitter.getUserTimeline(); // 全タイムライン読み込み
             List<String> idList = new ArrayList<>(); // ターゲットさんのつぶやきID
             List<String> messList = new ArrayList<>(); // ターゲットさんがつぶやいた内容
 
-            StatusFilter(userStatuses, idList, messList);
+            StatusFilter(statuses, idList, messList);
 
             BigInteger target = new BigInteger(idList.get(0)); // 一番最新のid取得
             System.out.println(target + " :: " + messList.get(0));
@@ -43,19 +42,21 @@ public class ChanBotForReply {
                     messList.get(0).substring(1,2).equals("@")
                             ? messList.get(0).split(" ")[0].substring(2): Keys.ME.toString();
 
+            // TODO メンション -> 自つぶやき -> bot で返信する時、annoTarget 再設定問題 (行ナンバーずらし)
+
             /**
              * target is not ME
              */
             if (!annoTarget.equals(Keys.ME.toString())) {
-                // TODO 変数入れ替え? (メモリ節約)
-                ResponseList<Status> mentionStatuses = twitter.getMentionsTimeline(); // メンションのみ読み込み
-                List<String> idMentionList = new ArrayList<>();
-                List<String> messMentionList = new ArrayList<>();
+                // 変数入れ替え
+                statuses = twitter.getMentionsTimeline(); // メンションのみ読み込み
+                idList = new ArrayList<>();
+                messList = new ArrayList<>();
 
-                StatusFilter(mentionStatuses, idMentionList, messMentionList);
+                StatusFilter(statuses, idList, messList);
 
                 target = new BigInteger(idList.get(0));
-                System.out.println(target + " :: " + messMentionList.get(0));
+                System.out.println(target + " :: " + messList.get(0));
             }
 
             int idx = 0;
