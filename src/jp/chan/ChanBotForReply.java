@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class ChanBotForReply {
 
-    // TODO 一定時間繰り返してID取得 -> 新たなつぶやきIDだと判断したら返事する
     private static final String FROMBOT = " --- ちゃんbotより";
 
     public static void main(String[] args) {
@@ -28,19 +27,14 @@ public class ChanBotForReply {
              * 自分とのやりとり
              */
             // timeline (mentioned) 取得
-            ResponseList<Status> statuses = twitter.getUserTimeline();
+            ResponseList<Status> status = twitter.getUserTimeline();
             List<String> idList = new ArrayList<>(); // ターゲットさんのつぶやきID
             List<String> messList = new ArrayList<>(); // ターゲットさんがつぶやいた内容
-            // idの数字のところだけ取得
-            for (Status s : statuses) {
-                String[] statusArray = s.toString().split(",");
-                idList.add(statusArray[1].trim().substring(3));
-                messList.add(statusArray[2].trim().substring(5));
-            }
 
-            // 一番最新のid取得
-            BigInteger target = new BigInteger(idList.get(0));
-            System.out.println(idList.get(0) + "::" + messList.get(0));
+            StatusFilter(status, idList, messList);
+
+            BigInteger target = new BigInteger(idList.get(0)); // 一番最新のid取得
+            System.out.println(target + " :: " + messList.get(0));
 
             /**
              * Who's the target, ME or not.
@@ -48,23 +42,20 @@ public class ChanBotForReply {
             String annoTarget =
                     messList.get(0).substring(1,2).equals("@")
                             ? messList.get(0).split(" ")[0].substring(2): Keys.ME.toString();
+
             /**
              * target is not ME
              */
             if (!annoTarget.equals(Keys.ME.toString())) {
-                // TODO Refactor
-                ResponseList<Status> statuses_ = twitter.getMentionsTimeline();
-                List<String> idList_ = new ArrayList<>(); // ターゲットさんのつぶやきID
-                List<String> messList_ = new ArrayList<>(); // ターゲットさんがつぶやいた内容
-                // idの数字のところだけ取得
-                for (Status s : statuses_) {
-                    String[] statusArray = s.toString().split(",");
-                    idList_.add(statusArray[1].trim().substring(3));
-                    messList_.add(statusArray[2].trim().substring(5));
-                }
-                target = new BigInteger(idList_.get(0));
-                System.out.println(target);
-                System.out.println(target + "::" + messList_.get(0));
+                // 変数の入れ替え
+                status = twitter.getMentionsTimeline();
+                idList = new ArrayList<>();
+                messList = new ArrayList<>();
+
+                StatusFilter(status, idList, messList);
+
+                target = new BigInteger(idList.get(0));
+                System.out.println(target + " :: " + messList.get(0));
             }
 
             int idx = 0;
@@ -72,17 +63,32 @@ public class ChanBotForReply {
             MessageFilter messageFilter = new MessageFilter();
             String botReply = messageFilter.makeReply(targetMess);
 
+            // 更新される内容をセット
             StatusUpdate statusUpdate = new StatusUpdate("@" + annoTarget + " " + botReply + FROMBOT);
-
+            // 画像がある場合
             if (messageFilter.getPicFlag()) MessageFilter.getInagon(statusUpdate);
-
+            // 更新
             twitter.updateStatus(statusUpdate.inReplyToStatusId(target.longValue()));
-
 
             System.out.println("yes ok !");
 
         } catch (TwitterException e) {
             System.out.println("no !" + e.getMessage());
+        }
+    }
+
+    /**
+     * 様々なステータスに対応する凡用フィルター
+     *
+     * @param statuses Twitter Statuses のうちどれか
+     * @param idList  長い桁の ID リスト
+     * @param messList ID ごとのメッセージリスト
+     */
+    private static void StatusFilter(ResponseList<Status> statuses, List<String> idList, List<String> messList) {
+        for (Status s : statuses) {
+            String[] statusArray = s.toString().split(",");
+            idList.add(statusArray[1].trim().substring(3));
+            messList.add(statusArray[2].trim().substring(5));
         }
     }
 }
