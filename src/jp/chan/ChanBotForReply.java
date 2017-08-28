@@ -42,29 +42,26 @@ public class ChanBotForReply {
             BigInteger target = new BigInteger(idList.get(0));
             System.out.println(idList.get(0) + "::" + messList.get(0));
 
-
             /**
              * Who's the target, ME or not.
              */
             String annoTarget =
                     messList.get(0).substring(1,2).equals("@")
                             ? messList.get(0).split(" ")[0].substring(2): Keys.ME.toString();
-
             /**
              * target is not ME
              */
-            // TODO Refactor
-            ResponseList<Status> statuses_ = twitter.getMentionsTimeline();
-            List<String> idList_ = new ArrayList<>(); // ターゲットさんのつぶやきID
-            List<String> messList_ = new ArrayList<>(); // ターゲットさんがつぶやいた内容
-            // idの数字のところだけ取得
-            for (Status s : statuses_) {
-                String[] statusArray = s.toString().split(",");
-                idList_.add(statusArray[1].trim().substring(3));
-                messList_.add(statusArray[2].trim().substring(5));
-            }
-
             if (!annoTarget.equals(Keys.ME.toString())) {
+                // TODO Refactor
+                ResponseList<Status> statuses_ = twitter.getMentionsTimeline();
+                List<String> idList_ = new ArrayList<>(); // ターゲットさんのつぶやきID
+                List<String> messList_ = new ArrayList<>(); // ターゲットさんがつぶやいた内容
+                // idの数字のところだけ取得
+                for (Status s : statuses_) {
+                    String[] statusArray = s.toString().split(",");
+                    idList_.add(statusArray[1].trim().substring(3));
+                    messList_.add(statusArray[2].trim().substring(5));
+                }
                 target = new BigInteger(idList_.get(0));
                 System.out.println(target);
                 System.out.println(target + "::" + messList_.get(0));
@@ -72,10 +69,15 @@ public class ChanBotForReply {
 
             int idx = 0;
             String targetMess = messList.get(idx);
-            String botReply = MessageFilter.makeReply(targetMess);
+            MessageFilter messageFilter = new MessageFilter();
+            String botReply = messageFilter.makeReply(targetMess);
 
-            twitter.updateStatus(new StatusUpdate("@" + annoTarget + " " + botReply + FROMBOT)
-                    .inReplyToStatusId(target.longValue()));
+            StatusUpdate statusUpdate = new StatusUpdate("@" + annoTarget + " " + botReply + FROMBOT);
+
+            if (messageFilter.getPicFlag()) MessageFilter.getInagon(statusUpdate);
+
+            twitter.updateStatus(statusUpdate.inReplyToStatusId(target.longValue()));
+
 
             System.out.println("yes ok !");
 
