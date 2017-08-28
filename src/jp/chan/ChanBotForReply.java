@@ -47,7 +47,7 @@ public class ChanBotForReply {
              * target is not ME
              */
             if (!annoTarget.equals(Keys.ME.toString())) {
-                // TODO 変数入れ替え?
+                // TODO 変数入れ替え? (メモリ節約)
                 ResponseList<Status> mentionStatuses = twitter.getMentionsTimeline(); // メンションのみ読み込み
                 List<String> idMentionList = new ArrayList<>();
                 List<String> messMentionList = new ArrayList<>();
