@@ -27,11 +27,11 @@ public class ChanBotForReply {
              * 自分とのやりとり
              */
             // timeline (mentioned) 取得
-            ResponseList<Status> status = twitter.getUserTimeline();
+            ResponseList<Status> userStatuses = twitter.getUserTimeline(); // 全タイムライン読み込み
             List<String> idList = new ArrayList<>(); // ターゲットさんのつぶやきID
             List<String> messList = new ArrayList<>(); // ターゲットさんがつぶやいた内容
 
-            StatusFilter(status, idList, messList);
+            StatusFilter(userStatuses, idList, messList);
 
             BigInteger target = new BigInteger(idList.get(0)); // 一番最新のid取得
             System.out.println(target + " :: " + messList.get(0));
@@ -47,15 +47,15 @@ public class ChanBotForReply {
              * target is not ME
              */
             if (!annoTarget.equals(Keys.ME.toString())) {
-                // 変数の入れ替え
-                status = twitter.getMentionsTimeline();
-                idList = new ArrayList<>();
-                messList = new ArrayList<>();
+                // TODO 変数入れ替え?
+                ResponseList<Status> mentionStatuses = twitter.getMentionsTimeline(); // メンションのみ読み込み
+                List<String> idMentionList = new ArrayList<>();
+                List<String> messMentionList = new ArrayList<>();
 
-                StatusFilter(status, idList, messList);
+                StatusFilter(mentionStatuses, idMentionList, messMentionList);
 
                 target = new BigInteger(idList.get(0));
-                System.out.println(target + " :: " + messList.get(0));
+                System.out.println(target + " :: " + messMentionList.get(0));
             }
 
             int idx = 0;
@@ -84,7 +84,8 @@ public class ChanBotForReply {
      * @param idList  長い桁の ID リスト
      * @param messList ID ごとのメッセージリスト
      */
-    private static void StatusFilter(ResponseList<Status> statuses, List<String> idList, List<String> messList) {
+    private static void StatusFilter(ResponseList<Status> statuses, List<String> idList, List<String> messList)
+    {
         for (Status s : statuses) {
             String[] statusArray = s.toString().split(",");
             idList.add(statusArray[1].trim().substring(3));
