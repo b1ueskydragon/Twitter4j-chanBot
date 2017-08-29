@@ -67,6 +67,7 @@ public class ChanBotForReplyTrue {
                 }
 
                 // TODO できればここで status 再読み込み || FROMBOT が含まれなくなったフラグ投げ
+                // TODO 再読み込み recursion
 
                 // 更新される内容をセット
                 StatusUpdate statusUpdate = new StatusUpdate("@" + annoTarget + " " + botReply + FROMBOT);
