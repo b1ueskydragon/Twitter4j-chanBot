@@ -82,8 +82,8 @@ public class Sort {
         quickSort(resultTargetArray, 0, resultTargetArray.length - 1);
 
         for (int i = 0; i < resultTargetArray.length; i++) {
-          // resultMessage += resultTargetArray[i] + ",";
-          resultMessage += resultTargetArray[i] + " "; // 書き出しは , 大丈夫だけど、統一性のために
+            resultMessage += resultTargetArray[i] + ",";
+          //resultMessage += resultTargetArray[i] + " "; // 書き出しは , 大丈夫だけど、統一性のために
         }
         resultMessage = "[" + resultMessage.substring(0, resultMessage.length() - 1) + "]" + "かな！";
 
