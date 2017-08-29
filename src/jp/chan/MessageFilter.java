@@ -43,7 +43,9 @@ public class MessageFilter {
             botReply = Tenki.tenki(targetMess);
         } else if (targetMess.contains("時間") || targetMess.contains("何時")) {
             botReply = NOW + " だよ";
-        } else {
+        } else if (targetMess.contains("ありがとう") && targetMess.contains("bot")) {
+            botReply = "どーいたしましてー";
+        } else{
            // botReply = inputHere();
             botReply = "( ´・ω・` )";
         }
