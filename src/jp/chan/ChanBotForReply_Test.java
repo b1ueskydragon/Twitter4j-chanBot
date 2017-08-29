@@ -61,6 +61,12 @@ public class ChanBotForReply_Test {
             int idx = 0;
             String targetMess = messList.get(idx);
             MessageFilter messageFilter = new MessageFilter();
+
+            // Test 臨時書き換え
+            targetMess = "明日の天気\n" +
+                    "ソート[32 3 2 -1]\n" +
+                    "いなごんもください"; // TODO これに対応できるように MessageFilter += 連結工夫
+
             String botReply = messageFilter.makeReply(targetMess);
 
             // 更新される内容をセット
