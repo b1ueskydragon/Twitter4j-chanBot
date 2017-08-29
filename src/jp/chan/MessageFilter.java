@@ -2,6 +2,7 @@ package jp.chan;
 
 import jp.keys.Keys;
 import jp.tools.Now;
+import jp.tools.Sort;
 import jp.tools.Tenki;
 import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
@@ -35,8 +36,9 @@ public class MessageFilter {
             setPicFlag(true);
         } else if (targetMess.contains("いなごん") && targetMess.contains("絵文字")){
             botReply = getInagonMoji();
-        }
-        else {
+        } else if (targetMess.contains("ソート")) { // TODO arrayFilter の if-else condition どこで?
+            botReply = Sort.arrayFilter(targetMess);
+        } else {
             botReply = inputHere();
         }
         return botReply;

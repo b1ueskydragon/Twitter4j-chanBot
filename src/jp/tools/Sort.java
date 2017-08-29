@@ -40,7 +40,7 @@ public class Sort {
     List<String> targetList = new ArrayList<>();
     // ソート かつ [ かつ ] が含まれたらソート開始
     try {
-      if (target.contains("ソート")) {
+ //     if (target.contains("ソート")) {
         if (target.contains("[") && target.contains("]")) {
           for (char t : target.toCharArray()) {
             targetList.add(String.valueOf(t));
@@ -70,7 +70,8 @@ public class Sort {
           beforeSplit += targetNumArray[i];
         }
 
-        String[] afterSplitArray = beforeSplit.split(",");
+        //String[] afterSplitArray = beforeSplit.split(",");
+        String[] afterSplitArray = beforeSplit.split(" "); // なぜか , だと読み込めないのでとりあえず
         int[] resultTargetArray = new int[afterSplitArray.length];
         int idx = 0;
         for (int i = 0; i < afterSplitArray.length; i++) {
@@ -81,13 +82,14 @@ public class Sort {
         quickSort(resultTargetArray, 0, resultTargetArray.length - 1);
 
         for (int i = 0; i < resultTargetArray.length; i++) {
-          resultMessage += resultTargetArray[i] + ",";
+          // resultMessage += resultTargetArray[i] + ",";
+          resultMessage += resultTargetArray[i] + " "; // 書き出しは , 大丈夫だけど、統一性のために
         }
         resultMessage = "[" + resultMessage.substring(0, resultMessage.length() - 1) + "]" + "かな！";
 
-      } else {
-        resultMessage = "ソートできないよ！";
-      }
+//      } else {
+//        resultMessage = "ソートできないよ！";
+//      }
 
       return resultMessage;
 
@@ -98,14 +100,13 @@ public class Sort {
   }
 
 
-  // テスト
-  public static void main(String[] args) {
-    String target = "これをソートして3,4,5,2,1,23]";
-    String target2 = "これをソートして[aaa]";
-    String target3 = "ソート[3,32,-2]";
-    System.out.println(arrayFilter(target));
-    System.out.println(arrayFilter(target2));
-    System.out.println(arrayFilter(target3));
-
-  }
+//  // テスト
+//  public static void main(String[] args) {
+//    String target = "これをソートして3,4,5,2,1,23]";
+//    String target2 = "これをソートして[aaa]";
+//    String target3 = "ソート[3 32 -2]";
+//    System.out.println(arrayFilter(target));
+//    System.out.println(arrayFilter(target2));
+//    System.out.println(arrayFilter(target3));
+//  }
 }
