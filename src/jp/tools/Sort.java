@@ -33,6 +33,7 @@ public class Sort {
     return array;
   }
 
+  // TODO REFACTOR (いらない if-else condition ないか確認)
   public static String arrayFilter(String target) {
 
     String resultMessage = "";
@@ -90,7 +91,7 @@ public class Sort {
 
       return resultMessage;
 
-    } catch (NumberFormatException e) {
+    } catch (Exception e) {
         resultMessage = "ソートできないよ！";
         return resultMessage;
     }
@@ -99,7 +100,7 @@ public class Sort {
 
   // テスト
   public static void main(String[] args) {
-    String target = "これをソートして[3,4,5,2,1,23]";
+    String target = "これをソートして3,4,5,2,1,23]";
     String target2 = "これをソートして[aaa]";
     String target3 = "ソート[3,32,-2]";
     System.out.println(arrayFilter(target));
