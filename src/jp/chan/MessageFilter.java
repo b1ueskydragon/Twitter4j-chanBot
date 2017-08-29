@@ -21,8 +21,16 @@ public class MessageFilter {
 
         String botReply;
         setPicFlag(false);
-
-        if (targetMess.contains("どこ") && targetMess.contains("行")) {
+        // TODO 優先順位
+        if (targetMess.contains("いなごん") && !targetMess.contains("絵文字")) {
+            botReply = "いなごんだよ！";
+            setPicFlag(true);
+            // TODO ソーともフラグ
+        } else if (targetMess.contains("いなごん") && targetMess.contains("絵文字")){
+            botReply = getInagonMoji();
+        } else if (targetMess.contains("ソート")) { // TODO arrayFilter の if-else condition どこで?
+            botReply = Sort.arrayFilter(targetMess);
+        } else if (targetMess.contains("どこ") && targetMess.contains("行")) {
             botReply = "アップルストア";
         } else if (targetMess.contains("ねむ") || targetMess.contains("眠い") || targetMess.contains("寝")) {
             botReply = "睡眠をとるのはどうですか";
@@ -30,14 +38,6 @@ public class MessageFilter {
             botReply = Tenki.tenki(targetMess);
         } else if (targetMess.contains("時間") || targetMess.contains("何時")) {
             botReply = NOW + " だよ";
-        } else if (targetMess.contains("いなごん") && !targetMess.contains("絵文字")) {
-            botReply =
-                "いなごんだよ！";
-            setPicFlag(true);
-        } else if (targetMess.contains("いなごん") && targetMess.contains("絵文字")){
-            botReply = getInagonMoji();
-        } else if (targetMess.contains("ソート")) { // TODO arrayFilter の if-else condition どこで?
-            botReply = Sort.arrayFilter(targetMess);
         } else {
             botReply = inputHere();
         }
