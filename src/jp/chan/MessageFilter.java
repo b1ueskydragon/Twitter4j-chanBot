@@ -45,6 +45,8 @@ public class MessageFilter {
             botReply = NOW + " だよ";
         } else if (targetMess.contains("ありがとう") && targetMess.contains("bot")) {
             botReply = "どーいたしましてー";
+        } else if (targetMess.contains("おやすみ")) {
+            botReply = "zzzZzzZ...";
         } else{
            // botReply = inputHere();
             botReply = "( ´・ω・` )";
