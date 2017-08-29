@@ -2,6 +2,7 @@ package jp.chan;
 
 import jp.keys.Keys;
 import jp.tools.Now;
+import jp.tools.RandomPick;
 import jp.tools.Sort;
 import jp.tools.Tenki;
 import twitter4j.StatusUpdate;
@@ -11,12 +12,13 @@ import java.io.File;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.Random;
 import java.util.Scanner;
 
 public class MessageFilter {
     private static final String NOW = Now.whatTimeIsIt();
 
-     //TODO reply パターン追加
+     //TODO reply パターン追加  &&  複数条件 contains の場合の botReply 連結
     public String makeReply(String targetMess) {
 
         String botReply;
@@ -30,6 +32,8 @@ public class MessageFilter {
             botReply = getInagonMoji();
         } else if (targetMess.contains("ソート")) { // TODO arrayFilter の if-else condition どこで?
             botReply = Sort.arrayFilter(targetMess);
+        } else if (targetMess.contains("選んでちゃんbot")) {
+            botReply = RandomPick.pickUpChanBot(targetMess);
         } else if (targetMess.contains("どこ") && targetMess.contains("行")) {
             botReply = "アップルストア";
         } else if (targetMess.contains("ねむ") || targetMess.contains("眠い") || targetMess.contains("寝")) {
