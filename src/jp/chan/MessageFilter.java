@@ -19,6 +19,7 @@ public class MessageFilter {
     private static final String NOW = Now.whatTimeIsIt();
 
      //TODO reply パターン追加  &&  複数条件 contains の場合の botReply 連結
+     // TODO switch-case に替える
     public String makeReply(String targetMess) {
 
         String botReply;
@@ -43,7 +44,8 @@ public class MessageFilter {
         } else if (targetMess.contains("時間") || targetMess.contains("何時")) {
             botReply = NOW + " だよ";
         } else {
-            botReply = inputHere();
+           // botReply = inputHere();
+            botReply = "( ´・ω・` )";
         }
         return botReply;
     }
