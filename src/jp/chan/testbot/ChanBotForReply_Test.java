@@ -1,5 +1,6 @@
-package jp.chan;
+package jp.chan.testbot;
 
+import jp.chan.MessageFilter;
 import jp.keys.Keys;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;

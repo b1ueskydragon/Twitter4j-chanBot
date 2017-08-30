@@ -1,4 +1,4 @@
-package jp.chan;
+package jp.chan.timelinereader;
 
 import jp.keys.Keys;
 import twitter4j.ResponseList;
