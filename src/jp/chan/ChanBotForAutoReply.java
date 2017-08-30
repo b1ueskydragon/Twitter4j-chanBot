@@ -46,8 +46,6 @@ public class ChanBotForAutoReply {
                     messList.get(0).substring(1, 2).equals("@")
                             ? messList.get(0).split(" ")[0].substring(2) : Keys.ME.toString();
 
-            // TODO メンション -> 自つぶやき -> bot で返信する時、annoTarget 再設定問題 (行ナンバーずらし)
-
             /**
              * target is not ME
              */
