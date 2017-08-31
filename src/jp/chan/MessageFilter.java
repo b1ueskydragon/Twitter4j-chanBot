@@ -18,20 +18,17 @@ import java.util.Scanner;
 public class MessageFilter {
     private static final String NOW = Now.whatTimeIsIt();
 
-     //TODO reply パターン追加  &&  複数条件 contains の場合の botReply 連結
-     // TODO switch-case に替える
     public String makeReply(String targetMess) {
-
         String botReply;
         setPicFlag(false);
-        // TODO 優先順位
+        setByeFlag(false);
+
         if (targetMess.contains("いなごん") && !targetMess.contains("絵文字")) {
             botReply = "いなごんだよ！";
             setPicFlag(true);
-            // TODO ソーともフラグ
         } else if (targetMess.contains("いなごん") && targetMess.contains("絵文字")){
             botReply = getInagonMoji();
-        } else if (targetMess.contains("ソート")) { // TODO arrayFilter の if-else condition どこで?
+        } else if (targetMess.contains("ソート")) {
             botReply = Sort.arrayFilter(targetMess);
         } else if (targetMess.contains("選んでちゃんbot")) {
             botReply = RandomPick.pickUpChanBot(targetMess);
@@ -47,6 +44,9 @@ public class MessageFilter {
             botReply = "どーいたしましてー";
         } else if (targetMess.contains("おやすみ")) {
             botReply = "zzzZzzZ...";
+        } else if (targetMess.contains("ちゃんbot") && targetMess.contains("バイバイ")) {
+            botReply = "またね！";
+            setByeFlag(true);
         } else{
            // botReply = inputHere();
             botReply = "( ´・ω・` )";
@@ -93,7 +93,18 @@ public class MessageFilter {
     }
 
     private Boolean picFlag;
-    public Boolean getPicFlag() { return picFlag; }
-    public void setPicFlag(Boolean picFlag) { this.picFlag = picFlag; }
+    public Boolean getPicFlag() {
+        return picFlag;
+    }
+    public void setPicFlag(Boolean picFlag) {
+        this.picFlag = picFlag;
+    }
 
+    private Boolean byeFlag;
+    public Boolean getByeFlag() {
+        return byeFlag;
+    }
+    public void setByeFlag(Boolean byeFlag) {
+        this.byeFlag = byeFlag;
+    }
 }

@@ -11,12 +11,13 @@ import java.util.List;
 public class ChanBotForAutoReply {
 
     private static final String FROMBOT = " --- ちゃんbotより";
+    private static Boolean autoFlag = true;
 
     public static void main(String[] args) {
         Twitter twitter = TwitterFactory.getSingleton();
         twitter.setOAuthConsumer(Keys.CONSUMERKEY.toString(), Keys.CONSUMERSECRET.toString());
         twitter.setOAuthAccessToken(new AccessToken(Keys.ACCESSTOKEN.toString(), Keys.ACCESSTOKENSECRET.toString()));
-        while (true) {
+        while (autoFlag) {
             chanBotInside(twitter);
         }
     }
@@ -78,6 +79,11 @@ public class ChanBotForAutoReply {
                 StatusUpdate statusUpdate = new StatusUpdate("@" + annoTarget + " " + botReply + FROMBOT);
                 // 画像がある場合
                 if (messageFilter.getPicFlag()) MessageFilter.getInagon(statusUpdate);
+                // バイバイ言われた場合
+                if (messageFilter.getByeFlag()) {
+                    autoFlag = false;
+                    System.out.println("ちゃんbot 電源切りますー");
+                }
                 // 更新
                 twitter.updateStatus(statusUpdate.inReplyToStatusId(target.longValue()));
 
