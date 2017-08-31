@@ -47,7 +47,7 @@ public class MessageFilter {
         } else if (targetMess.contains("ちゃんbot") && targetMess.contains("バイバイ")) {
             botReply = "またね！";
             setByeFlag(true);
-        } else{
+        } else {
            // botReply = inputHere();
             botReply = "( ´・ω・` )";
         }
