@@ -1,1 +1,1 @@
-本当の友達は自分自信だよ -- ちゃんbotより
+#### Myself is the best friend -- from chan-bot
